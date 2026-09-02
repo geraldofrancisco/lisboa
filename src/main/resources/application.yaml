@@ -1,3 +1,13 @@
+server:
+  port: 8080
+
+app:
+  version: @project.version@
+
 spring:
   application:
     name: lisboa
+  main:
+    banner-mode: off
+  mongodb:
+    uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?authSource=admin
