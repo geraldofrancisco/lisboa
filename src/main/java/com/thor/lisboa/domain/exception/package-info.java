@@ -1,0 +1,1 @@
+package com.thor.lisboa.domain.exception;
