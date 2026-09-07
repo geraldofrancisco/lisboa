@@ -33,7 +33,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = EMAIL_CONTROLLER_TAG_NAME, description = EMAIL_CONTROLLER_TAG_DESCRIPTION)
 public interface EmailSwagger {
 
-  String teste(@RequestParam("file") MultipartFile file);
+  String create(@RequestParam("file") MultipartFile file);
+
+
   @Operation(
       summary = EMAIL_CONTROLLER_GET_BY_FILTER_SUMMARY,
       description = EMAIL_CONTROLLER_GET_BY_FILTER_DESCRIPTION,
@@ -71,11 +73,12 @@ public interface EmailSwagger {
       String endSendDate,
 
       @RequestParam(required = false, defaultValue = "DESC")
-      @Parameter(description = QUERY_GET_BY_FILTER__DIRECTION_DESCRIPTION)
+      @Parameter(name = "direction", description = QUERY_GET_BY_FILTER__DIRECTION_DESCRIPTION)
       @ValueOfEnum(enumClass = Direction.class)
       String direction,
 
-      @RequestHeader(required = false) @Parameter(description = HEADER_GET_BY_FILTER_CURSOR_DESCRIPTION)
+      @RequestHeader(required = false)
+      @Parameter(name = "cursor", description = HEADER_GET_BY_FILTER_CURSOR_DESCRIPTION)
       String cursor
   );
 }

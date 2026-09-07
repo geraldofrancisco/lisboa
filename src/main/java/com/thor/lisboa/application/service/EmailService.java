@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EmailService {
   private final ExcelReadSheetOnlyTextUseCase excelRead;
 
-  public String teste(MultipartFile file) {
+  public String create(MultipartFile file) {
     return excelRead.read(file);
   }
 
