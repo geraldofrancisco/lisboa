@@ -1,0 +1,6 @@
+app:
+  integration:
+    email:
+      url: http://localhost:8081
+    agent:
+      url: http://localhost:8082

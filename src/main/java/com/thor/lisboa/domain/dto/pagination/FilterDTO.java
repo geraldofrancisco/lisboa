@@ -5,7 +5,6 @@ import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.domain.Sort.Direction;
 
 @Data
@@ -14,7 +13,7 @@ import org.springframework.data.domain.Sort.Direction;
 @AllArgsConstructor
 public abstract class FilterDTO {
 
-  private ScrollPosition scrollPosition;
+  private String cursor;
   private Integer size;
 
   @Default
