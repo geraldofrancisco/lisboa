@@ -8,6 +8,8 @@ import com.thor.lisboa.domain.mapper.ExceptionMapper;
 import com.thor.lisboa.domain.response.exception.ExceptionFieldResponse;
 import com.thor.lisboa.domain.response.exception.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,14 @@ public class ProjectExceptionHandler {
     return ExceptionMapper.toResponse(HttpStatus.INTERNAL_SERVER_ERROR, message);
   }
 
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ExceptionResponse> handlerConstraintViolationException(ConstraintViolationException ex) {
+    var list = ex.getConstraintViolations().parallelStream()
+        .map(this::getError)
+        .toList();
+    return ExceptionMapper.toResponse(HttpStatus.BAD_REQUEST, list);
+  }
+
   @ExceptionHandler(ProjectException.class)
   public ResponseEntity<ExceptionResponse> handlerProjectException(ProjectException ex) {
     var message = getMessage(ex.getMessage());
@@ -56,6 +66,16 @@ public class ProjectExceptionHandler {
     return ExceptionFieldResponse.builder()
         .message(getMessage(error.getDefaultMessage()))
         .name(error.getField())
+        .build();
+  }
+
+  private ExceptionFieldResponse getError(ConstraintViolation<?> violation) {
+    String fullPath = violation.getPropertyPath().toString();
+    String fieldName = fullPath.substring(fullPath.lastIndexOf('.') + 1);
+
+    return ExceptionFieldResponse.builder()
+        .name(fieldName)
+        .message(getMessage(violation.getMessage()))
         .build();
   }
 

@@ -1,15 +1,19 @@
 package com.thor.lisboa.adapters.in.rest;
 
+import static com.thor.lisboa.domain.constants.ProjectConstants.QUERY_GET_BY_FILTER__INVALID_DIRECTION_EXCEPTION;
+
 import com.thor.lisboa.adapters.in.mapper.EmailAdapterMapper;
 import com.thor.lisboa.adapters.in.rest.swagger.EmailSwagger;
 import com.thor.lisboa.application.service.EmailService;
 import com.thor.lisboa.domain.mapper.EmailMapper;
 import com.thor.lisboa.domain.request.validation.ValueOfEnum;
 import com.thor.lisboa.domain.response.email.EmailPageResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/email")
 @RequiredArgsConstructor
+@Validated
 public class EmailController implements EmailSwagger {
 
   private final EmailService service;
@@ -34,11 +39,15 @@ public class EmailController implements EmailSwagger {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   @Override
-  public EmailPageResponse getByFilter(Integer size, String startCreatedDate, String endCreatedDate,
-      String emailTypeId, String startSendDate, String endSendDate, String cursor,
-      @RequestParam(required = false, defaultValue = "DESC")
-      //@ValueOfEnum(enumClass = Direction.class)
-      String direction) {
+  public EmailPageResponse getByFilter(Integer size,
+      String startCreatedDate,
+      String endCreatedDate,
+      String emailTypeId,
+      String startSendDate,
+      String endSendDate,
+      String direction,
+      String cursor
+  ) {
     var filter = EmailMapper.toFilter(startCreatedDate, endCreatedDate, emailTypeId, startSendDate,
         endSendDate, cursor, size, direction);
     var response = service.getByFilter(filter);

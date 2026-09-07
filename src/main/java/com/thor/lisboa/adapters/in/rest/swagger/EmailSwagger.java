@@ -15,8 +15,11 @@ import static com.thor.lisboa.domain.constants.ProjectConstants.HEADER_GET_BY_FI
 import static com.thor.lisboa.domain.constants.ProjectConstants.PROJECT_SWAGGER_STATUS_OK;
 import static com.thor.lisboa.domain.constants.ProjectConstants.QUERY_GET_BY_FILTER_SIZE_DESCRIPTION;
 import static com.thor.lisboa.domain.constants.ProjectConstants.QUERY_GET_BY_FILTER__DIRECTION_DESCRIPTION;
+import static com.thor.lisboa.domain.constants.ProjectConstants.QUERY_GET_BY_FILTER__INVALID_DIRECTION_EXCEPTION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import com.thor.lisboa.domain.enums.ProjectDirection;
+import com.thor.lisboa.domain.request.validation.SecondValidationGroup;
 import com.thor.lisboa.domain.request.validation.ValueOfEnum;
 import com.thor.lisboa.domain.response.email.EmailPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,12 +28,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Sort.Direction;
+import jakarta.validation.GroupSequence;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = EMAIL_CONTROLLER_TAG_NAME, description = EMAIL_CONTROLLER_TAG_DESCRIPTION)
+@GroupSequence({EmailSwagger.class, SecondValidationGroup.class})
 public interface EmailSwagger {
 
   String create(@RequestParam("file") MultipartFile file);
@@ -74,6 +78,7 @@ public interface EmailSwagger {
 
       @RequestParam(required = false, defaultValue = "DESC")
       @Parameter(name = "direction", description = QUERY_GET_BY_FILTER__DIRECTION_DESCRIPTION)
+      @ValueOfEnum(enumClass = ProjectDirection.class, message = QUERY_GET_BY_FILTER__INVALID_DIRECTION_EXCEPTION)
       String direction,
 
       @RequestHeader(required = false)
