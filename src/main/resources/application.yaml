@@ -13,6 +13,7 @@ app:
   version: @project.version@
   integration:
     email:
-      url: ${AGENT_URL}
+      url: ${EMAIL_URL}
+      v1BaseUri: /api/v1/email
     agent:
       url: ${AGENT_URL}

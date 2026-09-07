@@ -74,7 +74,6 @@ public interface EmailSwagger {
 
       @RequestParam(required = false, defaultValue = "DESC")
       @Parameter(name = "direction", description = QUERY_GET_BY_FILTER__DIRECTION_DESCRIPTION)
-      @ValueOfEnum(enumClass = Direction.class)
       String direction,
 
       @RequestHeader(required = false)
