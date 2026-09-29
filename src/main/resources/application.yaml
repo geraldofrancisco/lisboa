@@ -19,3 +19,5 @@ app:
     agent:
       url: ${AGENT_URL}
       v1BaseUri: /api/v1/question
+      connectTimeout: ${AGENT_CONNECT_TIMEOUT:3s}
+      readTimeout: ${AGENT_READ_TIMEOUT:60s}

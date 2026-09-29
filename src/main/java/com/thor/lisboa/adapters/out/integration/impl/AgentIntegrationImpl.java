@@ -4,13 +4,7 @@ import com.thor.lisboa.adapters.out.integration.AgentIntegration;
 import com.thor.lisboa.adapters.out.integration.properties.AgentIntegrationProperties;
 import com.thor.lisboa.domain.dto.agent.AgentIntegrationQuestRequest;
 import com.thor.lisboa.domain.dto.agent.AgentIntegrationResponseDTO;
-import com.thor.lisboa.domain.exception.ProjectIntegrationException;
-import java.time.Duration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 @Component
 public class AgentIntegrationImpl extends BaseIntegration implements AgentIntegration {
@@ -19,7 +13,7 @@ public class AgentIntegrationImpl extends BaseIntegration implements AgentIntegr
 
   public AgentIntegrationImpl(AgentIntegrationProperties properties) {
     this.properties = properties;
-    super(properties.getUrl());
+    super(properties.getUrl(), properties.getConnectTimeout(), properties.getReadTimeout());
   }
 
   @Override

@@ -1,6 +1,7 @@
 package com.thor.lisboa.application.usecase;
 
 import com.thor.lisboa.adapters.out.integration.AgentIntegration;
+import com.thor.lisboa.domain.dto.agent.AgentIntegrationQuestRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
@@ -23,6 +24,10 @@ public class CreateEmailHtmlByAgentUseCase extends BaseUseCase<Pair<String, Stri
 
   @Override
   public String execute(Pair<String, String> pair) {
-    return pair.getFirst();
+    var prompt = GENERATE_EMAIL_HTML_PROMPT.formatted(pair.getFirst(), pair.getSecond());
+    var request = AgentIntegrationQuestRequest.builder()
+        .question(prompt)
+        .build();
+    return agentIntegration.question(request).getData();
   }
 }

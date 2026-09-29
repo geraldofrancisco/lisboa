@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException;
 
 class IntegrationClientsTest {
 
@@ -98,11 +97,23 @@ class IntegrationClientsTest {
   }
 
   @Test
-  void leavesOtherClientErrorsToRestClient() {
+  void translatesAnyClientOrServerErrorStatus() {
     response.set(new StubResponse(404, "{\"errorDescription\":\"missing\"}"));
-
-    assertThrows(HttpClientErrorException.NotFound.class,
+    var notFound = assertThrows(ProjectIntegrationException.class,
         () -> emailIntegration.getEmailTypeById("missing"));
+    assertEquals("missing", notFound.getMessage());
+    assertEquals(org.springframework.http.HttpStatus.NOT_FOUND, notFound.getStatus());
+  }
+
+  @Test
+  void fallsBackToRawBodyWhenErrorPayloadIsNotJson() {
+    response.set(new StubResponse(500, "internal failure"));
+
+    var error = assertThrows(ProjectIntegrationException.class,
+        () -> agentIntegration.question(AgentIntegrationQuestRequest.builder()
+            .question("question").build()));
+
+    assertEquals("internal failure", error.getMessage());
   }
 
   private record StubResponse(int status, String body) {
