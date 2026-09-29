@@ -1,13 +1,21 @@
 package com.thor.lisboa;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.mockito.Mockito.mockStatic;
 
-@SpringBootTest
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
+
 class ApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+  @Test
+  void mainStartsTheApplication() {
+    String[] args = {"--spring.main.web-application-type=none"};
+    new Application();
 
+    try (var springApplication = mockStatic(SpringApplication.class)) {
+      Application.main(args);
+
+      springApplication.verify(() -> SpringApplication.run(Application.class, args));
+    }
+  }
 }

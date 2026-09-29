@@ -14,6 +14,8 @@ app:
   integration:
     email:
       url: ${EMAIL_URL}
-      v1BaseUri: /api/v1/email
+      emailV1Uri: /api/v1/email
+      typeEmailV1Uri: /api/v1/email-type
     agent:
       url: ${AGENT_URL}
+      v1BaseUri: /api/v1/question

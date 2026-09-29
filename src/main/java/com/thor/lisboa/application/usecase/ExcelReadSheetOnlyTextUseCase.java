@@ -16,13 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Slf4j
-public class ExcelReadSheetOnlyTextUseCase {
+public class ExcelReadSheetOnlyTextUseCase extends BaseUseCase<MultipartFile, String> {
 
-  public String read(MultipartFile file) {
-    return read(file, 0);
-  }
-
-  public String read(MultipartFile file, Integer sheetNumber) {
+  private String read(MultipartFile file, Integer sheetNumber) {
     try (InputStream is = file.getInputStream(); Workbook workbook = WorkbookFactory.create(is)) {
       Sheet sheet = workbook.getSheetAt(sheetNumber);
       DataFormatter formatter = new DataFormatter();
@@ -36,5 +32,10 @@ public class ExcelReadSheetOnlyTextUseCase {
       log.error(EXCEL__ERROR_READING, e);
       return StringUtils.EMPTY;
     }
+  }
+
+  @Override
+  public String execute(MultipartFile input) {
+    return read(input, 0);
   }
 }

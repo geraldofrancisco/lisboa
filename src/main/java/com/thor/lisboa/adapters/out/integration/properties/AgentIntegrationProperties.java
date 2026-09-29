@@ -5,11 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "app.integration.email")
+@ConfigurationProperties(prefix = "app.integration.agent")
 @Data
-public class EmailIntegrationProperties {
+public class AgentIntegrationProperties {
 
   private String url;
-  private String emailV1Uri;
-  private String typeEmailV1Uri;
+  private String v1BaseUri;
 }
