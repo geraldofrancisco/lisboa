@@ -1,5 +1,6 @@
 package com.thor.lisboa.adapters.in.rest.swagger;
 
+import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_CREATE_EMAIL_TYPE_ID_HEADER_DESCRIPTION;
 import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_GET_BY_FILTER_DESCRIPTION;
 import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_GET_BY_FILTER_EMAIL_TYPE_ID_DESCRIPTION;
 import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_GET_BY_FILTER_END_CREATED_DATE_DESCRIPTION;
@@ -10,6 +11,8 @@ import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_G
 import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_GET_BY_FILTER_SUMMARY;
 import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_TAG_DESCRIPTION;
 import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CONTROLLER_TAG_NAME;
+import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CREATE__REQUEST_EMAIL_TYPE_ID_INVALID;
+import static com.thor.lisboa.domain.constants.EmailConstants.EMAIL_CREATE__REQUEST_EMAIL_TYPE_ID_REQUIRED;
 import static com.thor.lisboa.domain.constants.ProjectConstants.DEFAULT_PAGE_SIZE_VALUE;
 import static com.thor.lisboa.domain.constants.ProjectConstants.HEADER_GET_BY_FILTER_CURSOR_DESCRIPTION;
 import static com.thor.lisboa.domain.constants.ProjectConstants.PROJECT_SWAGGER_STATUS_OK;
@@ -20,6 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.thor.lisboa.domain.enums.ProjectDirection;
 import com.thor.lisboa.domain.request.validation.SecondValidationGroup;
+import com.thor.lisboa.domain.request.validation.ValidObjectId;
 import com.thor.lisboa.domain.request.validation.ValueOfEnum;
 import com.thor.lisboa.domain.response.email.EmailPageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +33,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.GroupSequence;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +42,15 @@ import org.springframework.web.multipart.MultipartFile;
 @GroupSequence({EmailSwagger.class, SecondValidationGroup.class})
 public interface EmailSwagger {
 
-  String create(@RequestParam("file") MultipartFile file);
+  String create(
+      @RequestParam("file") MultipartFile file,
+
+      @RequestHeader
+      @Parameter(name = "emailTypeId", description = EMAIL_CONTROLLER_CREATE_EMAIL_TYPE_ID_HEADER_DESCRIPTION)
+      @NotBlank(message = EMAIL_CREATE__REQUEST_EMAIL_TYPE_ID_REQUIRED)
+      @ValidObjectId(message = EMAIL_CREATE__REQUEST_EMAIL_TYPE_ID_INVALID, groups = SecondValidationGroup.class)
+      String emailTypeId
+  );
 
 
   @Operation(

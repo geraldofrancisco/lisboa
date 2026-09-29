@@ -32,8 +32,8 @@ public class EmailController implements EmailSwagger {
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Override
-  public String create(MultipartFile file) {
-    return service.create(file, "6abae6828b683c8f9d982b91");
+  public String create(MultipartFile file, String emailTypeId) {
+    return service.create(file, emailTypeId);
   }
 
   @GetMapping

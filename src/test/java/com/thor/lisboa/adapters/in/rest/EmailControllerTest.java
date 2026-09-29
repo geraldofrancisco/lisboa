@@ -22,7 +22,7 @@ class EmailControllerTest {
     var file = new MockMultipartFile("file", "email.xlsx", "application/octet-stream", new byte[0]);
     when(service.create(file, "6abae6828b683c8f9d982b91")).thenReturn("<html/>");
 
-    assertEquals("<html/>", controller.create(file));
+    assertEquals("<html/>", controller.create(file, "6abae6828b683c8f9d982b91"));
     verify(service).create(file, "6abae6828b683c8f9d982b91");
   }
 

@@ -9,7 +9,9 @@ import com.thor.lisboa.adapters.out.integration.EmailIntegration;
 import com.thor.lisboa.application.usecase.CreateEmailHtmlByAgentUseCase;
 import com.thor.lisboa.application.usecase.ExcelReadSheetOnlyTextUseCase;
 import com.thor.lisboa.domain.dto.email.EmailFilterDTO;
+import com.thor.lisboa.domain.mapper.EmailMapper;
 import com.thor.lisboa.domain.repository.integration.email.response.EmailPageDTO;
+import com.thor.lisboa.domain.repository.integration.email.response.IntegrationEmailCreateResponse;
 import com.thor.lisboa.domain.repository.integration.email.response.IntegrationEmailTypeResponse;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,8 +32,10 @@ class EmailServiceTest {
     when(emailIntegration.getEmailTypeById("6abae6828b683c8f9d982b91"))
         .thenReturn(IntegrationEmailTypeResponse.builder().body("template").build());
     when(htmlUseCase.execute(org.mockito.ArgumentMatchers.any())).thenReturn("<html/>");
+    when(emailIntegration.create(EmailMapper.toCreateRequest("<html/>")))
+        .thenReturn(IntegrationEmailCreateResponse.builder().id("email-id").build());
 
-    assertEquals("<html/>", service.create(file, "6abae6828b683c8f9d982b91"));
+    assertEquals("email-id", service.create(file, "6abae6828b683c8f9d982b91"));
     verify(htmlUseCase).execute(org.mockito.ArgumentMatchers.argThat(
         pair -> "spreadsheet".equals(pair.getFirst()) && "template".equals(pair.getSecond())));
   }
