@@ -8,6 +8,7 @@ import static com.thor.lisboa.domain.constants.ProjectConstants.PROJECT_EXCEPTIO
 import static com.thor.lisboa.domain.constants.ProjectConstants.PROJECT_EXCEPTION_RESPONSE_TIMESTAMP_DESCRIPTION;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExceptionResponse {
 
   @Schema(description = PROJECT_EXCEPTION_RESPONSE_TIMESTAMP_DESCRIPTION)

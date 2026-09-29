@@ -15,7 +15,7 @@ class ExceptionMapperTest {
     var response = ExceptionMapper.toResponse(HttpStatus.NOT_FOUND, "missing");
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("missing", response.getBody().getErrorDescription());
+    assertEquals("missing", response.getBody().getError());
     assertEquals(HttpStatus.NOT_FOUND.value(), response.getBody().getStatus());
     assertNull(response.getBody().getFields());
   }
@@ -27,7 +27,7 @@ class ExceptionMapperTest {
     var response = ExceptionMapper.toResponse(HttpStatus.BAD_REQUEST, fields);
 
     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    assertNull(response.getBody().getErrorDescription());
+    assertNull(response.getBody().getError());
     assertEquals(fields, response.getBody().getFields());
   }
 }

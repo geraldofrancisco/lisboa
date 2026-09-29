@@ -82,13 +82,13 @@ class IntegrationClientsTest {
 
   @Test
   void translatesBadRequestAndServerErrors() {
-    response.set(new StubResponse(400, "{\"errorDescription\":\"bad request\"}"));
+    response.set(new StubResponse(400, "{\"error\":\"bad request\"}"));
     var badRequest = assertThrows(ProjectIntegrationException.class,
         () -> emailIntegration.getByFilter(EmailFilterDTO.builder().build()));
     assertEquals("bad request", badRequest.getMessage());
     assertEquals(org.springframework.http.HttpStatus.BAD_REQUEST, badRequest.getStatus());
 
-    response.set(new StubResponse(500, "{\"errorDescription\":\"server error\"}"));
+    response.set(new StubResponse(500, "{\"error\":\"server error\"}"));
     var serverError = assertThrows(ProjectIntegrationException.class,
         () -> agentIntegration.question(AgentIntegrationQuestRequest.builder()
             .question("question").build()));
@@ -98,7 +98,7 @@ class IntegrationClientsTest {
 
   @Test
   void translatesAnyClientOrServerErrorStatus() {
-    response.set(new StubResponse(404, "{\"errorDescription\":\"missing\"}"));
+    response.set(new StubResponse(404, "{\"error\":\"missing\"}"));
     var notFound = assertThrows(ProjectIntegrationException.class,
         () -> emailIntegration.getEmailTypeById("missing"));
     assertEquals("missing", notFound.getMessage());
@@ -114,6 +114,18 @@ class IntegrationClientsTest {
             .question("question").build()));
 
     assertEquals("internal failure", error.getMessage());
+  }
+
+  @Test
+  void ignoresUnknownFieldsInTheErrorPayload() {
+    response.set(new StubResponse(400,
+        "{\"error\":\"bad request\",\"path\":\"/api/v1/question\"}"));
+
+    var error = assertThrows(ProjectIntegrationException.class,
+        () -> agentIntegration.question(AgentIntegrationQuestRequest.builder()
+            .question("question").build()));
+
+    assertEquals("bad request", error.getMessage());
   }
 
   private record StubResponse(int status, String body) {

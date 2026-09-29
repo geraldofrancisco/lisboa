@@ -36,7 +36,7 @@ class ProjectExceptionHandlerTest {
 
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     assertEquals("PROJECT_GENERIC_EXCEPTION",
-        response.getBody().getErrorDescription());
+        response.getBody().getError());
   }
 
   @Test
@@ -44,7 +44,7 @@ class ProjectExceptionHandlerTest {
     var response = handler.handlerProjectException(new ProjectBusinessException("business.error"));
 
     assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, response.getStatusCode());
-    assertEquals("business.error", response.getBody().getErrorDescription());
+    assertEquals("business.error", response.getBody().getError());
   }
 
   @Test
