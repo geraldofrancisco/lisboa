@@ -21,7 +21,7 @@ class EmailServiceTest {
   private final EmailIntegration emailIntegration = mock(EmailIntegration.class);
   private final CreateEmailHtmlByAgentUseCase htmlUseCase =
       mock(CreateEmailHtmlByAgentUseCase.class);
-  private final EmailService service = new EmailService(excel, emailIntegration, htmlUseCase);
+  private final EmailService service = new EmailService(excel, htmlUseCase, emailIntegration);
 
   @Test
   void createsEmailFromSpreadsheetAndTemplate() {

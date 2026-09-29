@@ -4,7 +4,9 @@ import com.thor.lisboa.adapters.out.integration.EmailIntegration;
 import com.thor.lisboa.adapters.out.integration.properties.EmailIntegrationProperties;
 import com.thor.lisboa.domain.dto.email.EmailFilterDTO;
 import com.thor.lisboa.domain.exception.ProjectIntegrationException;
+import com.thor.lisboa.domain.repository.integration.email.request.IntegrationEmailCreateRequest;
 import com.thor.lisboa.domain.repository.integration.email.response.EmailPageDTO;
+import com.thor.lisboa.domain.repository.integration.email.response.IntegrationEmailCreateResponse;
 import com.thor.lisboa.domain.repository.integration.email.response.IntegrationEmailTypeResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -40,5 +42,14 @@ public class EmailIntegrationImpl extends BaseIntegration implements EmailIntegr
             .uri(url)
             .retrieve())
         .body(IntegrationEmailTypeResponse.class);
+  }
+
+  @Override
+  public IntegrationEmailCreateResponse create(IntegrationEmailCreateRequest request) {
+    return this.handleClientErrors(client.post()
+            .uri(properties.getEmailV1Uri())
+            .body(request)
+            .retrieve())
+        .body(IntegrationEmailCreateResponse.class);
   }
 }

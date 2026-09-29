@@ -2,6 +2,7 @@ package com.thor.lisboa.domain.mapper;
 
 
 import com.thor.lisboa.domain.dto.email.EmailFilterDTO;
+import com.thor.lisboa.domain.repository.integration.email.request.IntegrationEmailCreateRequest;
 import com.thor.lisboa.domain.util.DateTimeUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,12 @@ public class EmailMapper extends PageMapper {
     }
 
     return builder.build();
+  }
+
+  public static IntegrationEmailCreateRequest toCreateRequest(String body) {
+    return IntegrationEmailCreateRequest.builder()
+        .body(body)
+        .build();
   }
 
 }

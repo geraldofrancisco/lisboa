@@ -19,7 +19,7 @@ public class CreateEmailHtmlByAgentUseCase extends BaseUseCase<Pair<String, Stri
       %s
       Tenho o seguinte template de email, substitua as variáves com interpolação utilizando o texto do excel, e gere o html do email:
       %s
-      Gere o html do email, não gere o texto do email e nem explicações ou contextos, apenas o html.
+      Gere o html do email, não gere o texto do email e nem explicações ou contextos, garanta que tenha apenas o html.
       """;
 
   @Override
